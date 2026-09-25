@@ -1,0 +1,158 @@
+---
+import Base from '../layouts/Base.astro'
+import PageHero from '../components/PageHero.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { CHECKS, MARKETS, CAUGHT, PROMISE, ACCREDITATIONS, ARTWORK_SPEC } from '../data/compliance'
+import { COMPLIANCE_PRODUCTS, gbp } from '../data/pricing'
+import { VERBATIM } from '../data/copy'
+---
+
+<Base
+  title="Compliance and quality — why in-house checking matters"
+  description="Twelve checks against UK, EU, FDA and Health Canada rules before any artwork goes to print. BRCGS AA, NSF-certified GMP and Halal accredited."
+  darkHeader
+>
+  <section class="section--dark chero">
+    <div class="page">
+      <span class="eyebrow">Compliance and quality</span>
+      <h1>Every design agency claims quality. Almost none can check your pack is legal.</h1>
+      <p class="lead chero__lead">{VERBATIM.peaceOfMind}.</p>
+      <div class="chero__accs">
+        {ACCREDITATIONS.map((a) => (
+          <div><strong>{a.mark}</strong><span class="micro">{a.detail}</span></div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">The promise</span>
+        <h2>Checked before it is approved to print</h2>
+      </div>
+      <div class="stack-6">
+        <p class="quote">{PROMISE}</p>
+        <p>
+          That check is included in every packaging design tier. It is also sold on its own, for
+          artwork somebody else made — which, on the evidence of the people who arrive here, is a
+          real and fairly large group.
+        </p>
+        <div class="btn-row">
+          {COMPLIANCE_PRODUCTS.map((p) => (
+            <a href="/services/compliance-check" class="btn btn--ghost">{p.name} · {gbp(p.price)}</a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ground">
+    <div class="page">
+      <span class="eyebrow">The checklist</span>
+      <h2>Twelve checks on every pack</h2>
+      <div class="grid grid-3" style="margin-top: var(--s7)">
+        {CHECKS.map((c, i) => (
+          <div class="chk">
+            <span class="chk__n spec">{String(i + 1).padStart(2, '0')}</span>
+            <strong>{c.name}</strong>
+            <p class="small">{c.detail}</p>
+          </div>
+        ))}
+      </div>
+      <p class="note" style="margin-top: var(--s7)">
+        Delivered as a report with the modifications needed — not a pass or fail.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page">
+      <span class="eyebrow">By market</span>
+      <h2>What changes when you cross a border</h2>
+      <div class="table-wrap" style="margin-top: var(--s6)">
+        <table class="table">
+          <thead><tr><th>Market</th><th>Regime</th><th>What the pack must carry</th></tr></thead>
+          <tbody>
+            {MARKETS.map((m) => (
+              <tr>
+                <td><strong>{m.market}</strong></td>
+                <td style="color: var(--ink-3)">{m.regime}</td>
+                <td><ul class="mlist">{m.carries.map((c) => <li>{c}</li>)}</ul></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top: var(--s6)">
+        This is why a territory variation is £500 and a second artwork, not a translation.
+        <a href="/services/add-ons#territories">The territory guide</a>.
+      </p>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="page">
+      <span class="eyebrow">Worked examples</span>
+      <h2>Two things we caught</h2>
+      <div class="grid grid-2" style="margin-top: var(--s7); max-width: 940px">
+        {CAUGHT.map((c) => (
+          <article class="caught">
+            <h3>{c.headline}</h3>
+            <p>{c.detail}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page page--narrow">
+      <span class="eyebrow">Practical</span>
+      <h2>Three facts that save a week each</h2>
+      <dl class="spec-list">
+        <dt>Artwork files</dt><dd>{ARTWORK_SPEC.accepted}</dd>
+        <dt>Logos</dt><dd>{ARTWORK_SPEC.logos}</dd>
+        <dt>Keep-clear area</dt><dd>{ARTWORK_SPEC.keepClear}</dd>
+      </dl>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .chero { padding-block: var(--s9) var(--s8); }
+  .chero h1 { max-width: 15em; }
+  .chero__lead { margin-top: var(--s5); max-width: 50ch; }
+  .chero__accs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s7);
+    margin-top: var(--s8);
+    padding-top: var(--s5);
+    border-top: 1px solid var(--rule-dark);
+  }
+  .chero__accs > div { display: grid; gap: 2px; }
+  .chero__accs strong { font-size: var(--t-h3); color: var(--gold-hi); letter-spacing: -.02em; }
+  .chero__accs .micro { color: var(--on-dark-3); }
+
+  .chk { display: grid; gap: var(--s2); align-content: start; padding-top: var(--s4); border-top: 1px solid var(--rule-2); }
+  .chk__n { color: var(--gold-lo); font-weight: 800; font-size: var(--t-micro); letter-spacing: .1em; }
+  .chk p { color: var(--ink-2); margin: 0; }
+
+  .mlist { margin: 0; padding-left: 1.1em; display: grid; gap: 2px; }
+  .mlist li { color: var(--ink-2); }
+
+  .caught { border-top: 2px solid var(--gold); padding-top: var(--s5); }
+  .caught h3 { color: var(--on-dark); margin-bottom: var(--s3); }
+  .caught p { color: var(--on-dark-2); }
+
+  .spec-list { margin: var(--s6) 0 0; }
+  .spec-list dt {
+    font-size: var(--t-micro); letter-spacing: .1em; text-transform: uppercase;
+    font-variation-settings: 'wdth' 86; color: var(--ink-3); font-weight: 700;
+    padding-top: var(--s4); border-top: 1px solid var(--rule);
+  }
+  .spec-list dd { margin: var(--s2) 0 var(--s4); color: var(--ink-2); }
+</style>

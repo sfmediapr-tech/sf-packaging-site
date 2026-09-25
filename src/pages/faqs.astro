@@ -1,0 +1,70 @@
+---
+import Base from '../layouts/Base.astro'
+import PageHero from '../components/PageHero.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { FAQS } from '../data/faqs'
+
+const fromProposal = FAQS.filter((f) => f.group === 'proposal')
+const fromProjects = FAQS.filter((f) => f.group === 'live')
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+}
+---
+
+<Base
+  title="FAQs — packaging design, timelines, file formats and compliance"
+  description="What file formats we provide, how long a design takes, whether you need a cutter guide, who owns the artwork, and what happens when nutrition figures change."
+>
+  <PageHero eyebrow="FAQs" title="The questions we get asked most." />
+
+  <section class="section--tight">
+    <div class="page page--narrow">
+      <h2 class="micro" style="margin-bottom: var(--s5)">About the service</h2>
+      <dl class="faq">
+        {fromProposal.map((f) => (
+          <div class="faq__item">
+            <dt>{f.q}</dt>
+            <dd>{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <section class="section section--ground">
+    <div class="page page--narrow">
+      <h2 class="micro" style="margin-bottom: var(--s5)">The ones that come up on live projects</h2>
+      <dl class="faq">
+        {fromProjects.map((f) => (
+          <div class="faq__item">
+            <dt>{f.q}</dt>
+            <dd>{f.a}</dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  </section>
+
+  <CtaBand />
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+</Base>
+
+<style>
+  .faq { margin: 0; display: grid; gap: 0; }
+  .faq__item { padding: var(--s6) 0; border-top: 1px solid var(--rule); }
+  .faq__item:last-child { border-bottom: 1px solid var(--rule); }
+  .faq dt {
+    font-size: var(--t-h3);
+    font-weight: 700;
+    letter-spacing: -.015em;
+    margin-bottom: var(--s3);
+  }
+  .faq dd { margin: 0; color: var(--ink-2); max-width: var(--measure); }
+</style>

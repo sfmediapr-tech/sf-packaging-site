@@ -1,0 +1,314 @@
+---
+import Base from '../layouts/Base.astro'
+import TierCards from '../components/TierCards.astro'
+import CtaBand from '../components/CtaBand.astro'
+import CaseStudyCard from '../components/CaseStudyCard.astro'
+import PackStage from '../islands/PackStage'
+import { TIERS, gbp } from '../data/pricing'
+import { VERBATIM, THREE_REASONS } from '../data/copy'
+import { STAGES, TIMELINE_CAVEAT } from '../data/process'
+import { ACCREDITATIONS } from '../data/compliance'
+import { CASE_STUDIES, TESTIMONIALS_CLEARED } from '../data/work'
+import { SITE } from '../data/site'
+
+/* Nine blocks, in the brief's order. The proposal's argument survives intact;
+   only the sequence changes, because a web visitor has not already bought a
+   formulation from us. */
+
+const homeStudies = CASE_STUDIES.slice(0, 6)
+const proof = CASE_STUDIES.filter((c) => c.quote).slice(0, 3)
+---
+
+<Base
+  title="Packaging design for supplement brands — Supplement Factory"
+  description="Fixed-price packaging design for supplement brands, built compliant from the start. Tiers from £1,000. In-house design, formulation and compliance in one place."
+  darkHeader
+>
+  <!-- 1 · Hero -->
+  <section class="section--dark hero">
+    <div class="page hero__grid">
+      <div class="hero__copy">
+        <span class="eyebrow">Packaging design</span>
+        <h1 class="hero__h1">
+          Packaging design for supplement brands, built compliant from the start.
+        </h1>
+        <p class="lead hero__lead">
+          Not designed first and checked afterwards. Our technical and quality team review the
+          artwork against the rules of your market before anything goes to print — because the
+          alternative is finding out at proof stage.
+        </p>
+
+        <div class="btn-row">
+          <a href="/start" class="btn btn--primary">Start your project</a>
+          <a href="/work" class="btn btn--ghost">See the work</a>
+        </div>
+
+        <!-- Above the fold, deliberately: a published price is the single biggest
+             trust signal against a cheap-marketplace comparison. -->
+        <ul class="hero__prices">
+          {TIERS.map((t) => (
+            <li>
+              <span class="micro">{t.covers}</span>
+              <strong class="spec">{gbp(t.price)}</strong>
+            </li>
+          ))}
+        </ul>
+
+        <p class="hero__accs micro">
+          {ACCREDITATIONS.map((a) => a.mark).join(' · ')} — <a href="/compliance">how we check</a>
+        </p>
+      </div>
+
+      <div class="hero__stage">
+        <PackStage client:load />
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · The problem -->
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Why the pack matters</span>
+        <h2>{VERBATIM.threeReasons}</h2>
+      </div>
+      <div>
+        <ol class="reasons">
+          {THREE_REASONS.map((r, i) => (
+            <li>
+              <span class="reasons__n spec">0{i + 1}</span>
+              <p>{r}</p>
+            </li>
+          ))}
+        </ol>
+        <p class="small reasons__after">
+          Two of those are won long before anyone sees your pack. The third is won in the second
+          and a half someone spends looking at a shelf.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3 · The compliance hook. The most sellable line in the proposal, verbatim. -->
+  <section class="section section--dark">
+    <div class="page">
+      <span class="eyebrow">The wall everyone hits</span>
+      <h2 class="hook">
+        A freelancer, an agency or an AI tool will all run into the same problem —
+        {' '}{VERBATIM.complianceHook}.
+      </h2>
+      <div class="hook__grid">
+        <p class="lead">
+          A cheap designer does not know UK, EU or FDA labelling. An agency does not hold your
+          formulation. We do both, and we check the artwork before it prints.
+        </p>
+        <p class="hook__promise">
+          {VERBATIM.peaceOfMind}.
+        </p>
+      </div>
+      <div class="btn-row">
+        <a href="/compliance" class="btn btn--primary">What the check covers</a>
+        <a href="/services/compliance-check" class="btn btn--ghost">I already have artwork</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · In one place -->
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">All in one place</span>
+        <h2>{VERBATIM.onePlace}</h2>
+      </div>
+      <div class="stack">
+        <p>
+          If you are already manufacturing with us, you have put your trust in us to create your
+          formulation. The pack is the same conversation, with the same team, working from figures
+          we already hold — so the nutrition panel is not a document someone emails across and
+          retypes.
+        </p>
+        <p>
+          If you are not, that is fine too. Design is a standalone service and most of our design
+          clients start here.
+        </p>
+        <p class="note">
+          {VERBATIM.relationship}.
+        </p>
+        <a href={SITE.manufacturingUrl} class="btn btn--ghost">See manufacturing</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · The three tiers -->
+  <section class="section section--ground">
+    <div class="page">
+      <span class="eyebrow">Fixed price</span>
+      <h2>Three tiers. The only variable is your format.</h2>
+      <p class="lead" style="margin-top: var(--s5); max-width: 46ch">
+        Each one includes the same three things — a design proposal with three rounds of revisions,
+        a compliance check, and the final artwork files with full ownership.
+      </p>
+      <div style="margin-top: var(--s7)">
+        <TierCards />
+      </div>
+      <p class="small" style="margin-top: var(--s5); color: var(--ink-3)">
+        VAT applies to UK-based clients. <a href="/pricing">Full rate card, including add-ons</a>.
+      </p>
+    </div>
+  </section>
+
+  <!-- 6 · The work -->
+  <section class="section">
+    <div class="page">
+      <div class="work__head">
+        <div>
+          <span class="eyebrow">Our work</span>
+          <h2>Packs we have designed</h2>
+        </div>
+        <a href="/work" class="btn btn--ghost">All case studies</a>
+      </div>
+      <div class="grid grid-3" style="margin-top: var(--s7)">
+        {homeStudies.map((s) => <CaseStudyCard study={s} />)}
+      </div>
+    </div>
+  </section>
+
+  <!-- 7 · How it works -->
+  <section class="section section--ground">
+    <div class="page">
+      <span class="eyebrow">How it works</span>
+      <h2>Five stages, four to six weeks</h2>
+      <ol class="stages">
+        {STAGES.map((s) => (
+          <li>
+            <span class="stages__n spec">{s.n}</span>
+            <h3>{s.name}</h3>
+            <p class="small">{s.what}</p>
+          </li>
+        ))}
+      </ol>
+      <p class="note" style="margin-top: var(--s6)">
+        {TIMELINE_CAVEAT} <a href="/how-it-works">What we need from you</a> — the list is short, and
+        it is what the four to six weeks depends on.
+      </p>
+    </div>
+  </section>
+
+  <!-- 8 · Testimonials -->
+  <section class="section">
+    <div class="page">
+      <span class="eyebrow">In their words</span>
+      {TESTIMONIALS_CLEARED ? (
+        <div class="grid grid-3" style="margin-top: var(--s6)">
+          {proof.map((p) => (
+            <figure class="card testimonial">
+              <blockquote class="quote">{p.quote}</blockquote>
+              <figcaption class="small">
+                <strong>{p.client}</strong><br />
+                <span style="color: var(--ink-3)">{p.product} · {p.format}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      ) : (
+        <div class="stack" style="margin-top: var(--s5)">
+          <h2>Eight brands, eight packs</h2>
+          <p class="lead">
+            The case studies carry the packs, the formats and what was caught before print.
+            Client quotes go up once each brand has confirmed we can publish theirs.
+          </p>
+          <a href="/work" class="btn btn--ink">Read the case studies</a>
+        </div>
+      )}
+    </div>
+  </section>
+
+  <!-- 9 · Start -->
+  <CtaBand />
+</Base>
+
+<style>
+  .hero { padding-block: var(--s9) var(--s10); }
+  .hero__grid {
+    display: grid;
+    gap: var(--s8);
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 980px) {
+    .hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
+  }
+  .hero__h1 { font-size: var(--t-hero); max-width: 13em; }
+  .hero__lead { margin-top: var(--s5); max-width: 42ch; }
+
+  .hero__prices {
+    list-style: none;
+    margin: var(--s8) 0 0;
+    padding: var(--s5) 0 0;
+    border-top: 1px solid var(--rule-dark);
+    display: grid;
+    gap: var(--s4);
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  }
+  .hero__prices li { display: grid; gap: var(--s1); }
+  .hero__prices .micro { color: var(--on-dark-3); line-height: 1.35; }
+  .hero__prices strong {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    color: var(--gold-hi);
+  }
+  .hero__accs { margin-top: var(--s5); color: var(--on-dark-3); }
+  .hero__accs a { color: var(--on-dark-2); }
+
+  .reasons { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s5); }
+  .reasons li { display: grid; grid-template-columns: 44px 1fr; gap: var(--s4); align-items: baseline; }
+  .reasons__n { color: var(--gold-lo); font-weight: 800; font-size: var(--t-small); letter-spacing: .08em; }
+  .reasons li p { font-size: var(--t-lead); margin: 0; }
+  .reasons__after { margin-top: var(--s6); color: var(--ink-3); }
+
+  .hook { max-width: 20em; }
+  .hook__grid {
+    display: grid;
+    gap: var(--s6);
+    margin: var(--s7) 0;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+  }
+  .hook__promise {
+    border-left: 3px solid var(--gold);
+    padding-left: var(--s5);
+    color: var(--on-dark);
+    font-size: var(--t-lead);
+    line-height: 1.5;
+  }
+
+  .work__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s4);
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .stages {
+    list-style: none;
+    margin: var(--s7) 0 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s5);
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    counter-reset: stage;
+  }
+  .stages li {
+    display: grid;
+    gap: var(--s2);
+    align-content: start;
+    padding-top: var(--s4);
+    border-top: 2px solid var(--gold);
+  }
+  .stages__n { color: var(--gold-lo); font-weight: 800; font-size: var(--t-micro); letter-spacing: .12em; }
+  .stages li p { color: var(--ink-2); margin: 0; }
+
+  .testimonial { gap: var(--s5); }
+  .testimonial figcaption { margin-top: auto; }
+</style>

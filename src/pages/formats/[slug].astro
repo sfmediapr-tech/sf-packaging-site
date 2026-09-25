@@ -1,0 +1,243 @@
+---
+import Base from '../../layouts/Base.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import CaseStudyCard from '../../components/CaseStudyCard.astro'
+import { FORMATS, QUOTED_FORMAT_NOTE } from '../../data/formats'
+import { TIERS, TIER_INCLUSIONS, gbp } from '../../data/pricing'
+import { CASE_STUDIES } from '../../data/work'
+import { ARTWORK_SPEC } from '../../data/compliance'
+
+/* One template, five pages. They carry the SEO, they answer "can you do my
+   pack", and they route the visitor to the right tier without them having to
+   work out which one they are. */
+export function getStaticPaths() {
+  return FORMATS.map((format) => ({ params: { slug: format.slug }, props: { format } }))
+}
+
+const { format } = Astro.props
+const tier = TIERS.find((t) => t.id === format.tier)
+const studies = CASE_STUDIES.filter((c) => format.heroCaseStudies.includes(c.slug))
+---
+
+<Base
+  title={`${format.name} — Supplement Factory`}
+  description={`${format.intro.slice(0, 150)}… Sizes, materials, finishes and pricing for ${format.shortName.toLowerCase()}.`}
+  darkHeader
+>
+  <section class="section--dark fhero">
+    <div class="page">
+      <span class="eyebrow">Formats</span>
+      <h1>{format.name}</h1>
+      <p class="lead fhero__lead">{format.intro}</p>
+
+      <div class="fhero__meta">
+        <div>
+          <span class="micro">Price</span>
+          <strong class="fhero__price">{tier ? gbp(tier.price) : 'Quoted'}</strong>
+          <span class="micro">{tier ? `${tier.name} · +VAT` : 'per project'}</span>
+        </div>
+        <div>
+          <span class="micro">Lead time</span>
+          <strong class="fhero__price">{format.leadTime.replace(' for the design', '')}</strong>
+          <span class="micro">for the design</span>
+        </div>
+        <div>
+          <span class="micro">Die lines held</span>
+          <strong class="fhero__price">{format.dieLines.length || '—'}</strong>
+          <span class="micro">{format.dieLines.length ? 'ready to lay out on' : 'sourced per project'}</span>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <a href={`/start?format=${format.slug}`} class="btn btn--primary">Start on this format</a>
+        <a href="/pricing" class="btn btn--ghost">Full rate card</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 1 · what it is and who it suits -->
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Who it suits</span>
+        <h2>{format.suits}</h2>
+      </div>
+      <div class="stack-6">
+        <div>
+          <h3 class="micro" style="margin-bottom: var(--s3)">This page covers</h3>
+          <ul class="chips">{format.covers.map((c) => <li class="tag">{c}</li>)}</ul>
+        </div>
+        {!tier && <p class="note">{QUOTED_FORMAT_NOTE}</p>}
+        {tier && (
+          <div>
+            <h3 class="micro" style="margin-bottom: var(--s3)">{tier.name}, {gbp(tier.price)}, includes</h3>
+            <ul class="inclusions">{TIER_INCLUSIONS.map((i) => <li>{i}</li>)}</ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 · sizes, 3 · materials and finishes -->
+  <section class="section section--ground">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Specification</span>
+        <h2>Sizes we work to</h2>
+      </div>
+      <div class="stack-6">
+        <div class="table-wrap">
+          <table class="table">
+            <tbody>
+              {format.sizes.map((s) => (
+                <tr><td><strong class="spec">{s.size}</strong></td><td style="color: var(--ink-2)">{s.note}</td></tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        <div class="grid grid-2">
+          <div>
+            <h3 class="micro" style="margin-bottom: var(--s3)">Materials</h3>
+            <ul class="chips">{format.materials.map((m) => <li class="tag">{m}</li>)}</ul>
+          </div>
+          <div>
+            <h3 class="micro" style="margin-bottom: var(--s3)">Finishes</h3>
+            <ul class="chips">{format.finishes.map((f) => <li class="tag">{f}</li>)}</ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 · what the design must carry -->
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Design</span>
+        <h2>What the design has to respect on this format</h2>
+        <p class="lead" style="margin-top: var(--s5)">
+          These are not preferences. Each one is a constraint that decides whether the artwork works
+          once the pack is made.
+        </p>
+      </div>
+      <ul class="notes">
+        {format.designNotes.map((n) => <li>{n}</li>)}
+      </ul>
+    </div>
+  </section>
+
+  <!-- 5 · the cutter guide -->
+  <section class="section section--dark">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Cutter guide</span>
+        <h2>Where the die line comes from</h2>
+      </div>
+      <div class="stack-6">
+        <p class="lead">{format.cutterGuide}</p>
+
+        {format.dieLines.length > 0 && (
+          <div>
+            <h3 class="micro" style="margin-bottom: var(--s3); color: var(--on-dark-3)">
+              Die lines we hold for this format
+            </h3>
+            <ul class="dielines">
+              {format.dieLines.map((d) => (
+                <li>
+                  <strong>{d.label}</strong>
+                  <span class="spec">
+                    {d.heightMm ? `${d.widthMm} × ${d.heightMm} mm` : `${d.widthMm} mm`}
+                    {d.gussetMm ? ` · ${d.gussetMm} mm gusset` : ''}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 · MOQ and lead time if manufacturing with us -->
+  <section class="section">
+    <div class="page">
+      <span class="eyebrow">If you manufacture with us too</span>
+      <h2>Minimums and timing</h2>
+      <div class="grid grid-3" style="margin-top: var(--s6)">
+        <div class="stat"><span class="micro">Minimum order</span><strong>{format.moq}</strong></div>
+        <div class="stat"><span class="micro">Design lead time</span><strong>{format.leadTime}</strong></div>
+        <div class="stat"><span class="micro">Keep clear on pack</span><strong>2 × 3 cm</strong><span class="small">for batch and best-before, overprinted at production</span></div>
+      </div>
+      <p class="note" style="margin-top: var(--s6)">
+        Artwork accepted as {ARTWORK_SPEC.accepted}. Logos in vector — {ARTWORK_SPEC.logos}.
+      </p>
+    </div>
+  </section>
+
+  <!-- 7 · a case study on that format -->
+  {studies.length > 0 && (
+    <section class="section section--ground">
+      <div class="page">
+        <span class="eyebrow">On this format</span>
+        <h2>Packs we have designed</h2>
+        <div class="grid grid-3" style="margin-top: var(--s6)">
+          {studies.map((s) => <CaseStudyCard study={s} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <CtaBand />
+</Base>
+
+<style>
+  .fhero { padding-block: var(--s9) var(--s8); }
+  .fhero h1 { max-width: 14em; }
+  .fhero__lead { margin-top: var(--s5); max-width: 52ch; }
+  .fhero__meta {
+    display: grid;
+    gap: var(--s5);
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    max-width: 700px;
+    margin: var(--s8) 0 var(--s6);
+    padding-top: var(--s5);
+    border-top: 1px solid var(--rule-dark);
+  }
+  .fhero__meta > div { display: grid; gap: 2px; }
+  .fhero__meta .micro { color: var(--on-dark-3); }
+  .fhero__price {
+    font-size: 1.6rem;
+    font-weight: 800;
+    letter-spacing: -.03em;
+    color: var(--gold-hi);
+    line-height: 1.1;
+  }
+
+  .chips { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--s2); }
+
+  .notes { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s5); }
+  .notes li {
+    padding-left: var(--s5);
+    border-left: 2px solid var(--gold);
+    font-size: var(--t-lead);
+    line-height: 1.45;
+  }
+
+  .dielines { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .dielines li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s4);
+    justify-content: space-between;
+    padding: var(--s3) 0;
+    border-bottom: 1px solid var(--rule-dark);
+    font-size: var(--t-small);
+  }
+  .dielines strong { color: var(--on-dark); font-weight: 600; }
+  .dielines span { color: var(--gold-hi); font-variant-numeric: tabular-nums; }
+
+  .stat { display: grid; gap: var(--s1); padding-top: var(--s4); border-top: 2px solid var(--gold); }
+  .stat strong { font-size: var(--t-h3); letter-spacing: -.02em; }
+  .stat .small { color: var(--ink-3); }
+</style>

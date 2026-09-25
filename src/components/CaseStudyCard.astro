@@ -1,0 +1,47 @@
+---
+import type { CaseStudy } from '../data/work'
+
+interface Props { study: CaseStudy }
+const { study } = Astro.props
+---
+<a href={`/work/${study.slug}`} class="cs" data-format={study.formatSlug}>
+  <div class="cs__shot" aria-hidden="true">
+    {/* Pack photography pending: originals and usage rights are still being
+        confirmed. Until then the slot holds the format rather than a stock
+        mockup, because the brief asks for one real pack shot, not a template. */}
+    <span class="cs__ph spec">{study.format}</span>
+  </div>
+  <div class="cs__body">
+    <h3>{study.client}</h3>
+    <p class="small">{study.product}</p>
+  </div>
+</a>
+
+<style>
+  .cs {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    border: 1px solid var(--rule);
+    background: var(--paper);
+    transition: border-color .18s var(--ease), transform .18s var(--ease);
+  }
+  .cs:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .cs__shot {
+    aspect-ratio: 4 / 3;
+    background:
+      repeating-linear-gradient(45deg, var(--ground) 0 10px, var(--ground-2) 10px 20px);
+    display: grid;
+    place-items: center;
+  }
+  .cs__ph {
+    font-size: var(--t-micro);
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .cs__body { padding: var(--s5); display: grid; gap: var(--s1); }
+  .cs__body p { color: var(--ink-3); margin: 0; }
+</style>

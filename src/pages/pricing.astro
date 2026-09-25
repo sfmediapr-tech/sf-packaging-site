@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro'
+import PageHero from '../components/PageHero.astro'
+import TierCards from '../components/TierCards.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { COMPLIANCE_PRODUCTS, ADD_ONS, WORKED_EXAMPLES, BRAND_IDENTITY, gbp } from '../data/pricing'
+---
+
+<Base
+  title="Pricing — the full packaging design rate card"
+  description="The whole rate card, published. Design tiers £1,000 to £1,500, compliance checks £750 to £1,000, languages from £200, territory variations £500."
+>
+  <PageHero
+    eyebrow="Pricing"
+    title="The whole rate card, published."
+    lead="A published price is the strongest answer to “why not use a cheaper freelancer”, because it lets you compare what is included rather than just the number."
+  />
+
+  <section class="section--tight">
+    <div class="page">
+      <h2>Packaging design</h2>
+      <p class="lead" style="margin: var(--s4) 0 var(--s7); max-width: 46ch">
+        Three tiers, identical inclusions. The only variable is your format.
+      </p>
+      <TierCards />
+    </div>
+  </section>
+
+  <!-- The compliance check gets its own card, visually separated, because it is
+       bought by a different person for a different reason. -->
+  <section class="section section--dark">
+    <div class="page">
+      <span class="eyebrow">Bought on its own</span>
+      <h2>Compliance check</h2>
+      <p class="lead" style="margin: var(--s5) 0 var(--s7); max-width: 46ch">
+        For artwork that already exists. Most people who buy this went somewhere cheaper first.
+      </p>
+      <div class="grid grid-2" style="max-width: 820px">
+        {COMPLIANCE_PRODUCTS.map((p) => (
+          <article class="card card--dark">
+            <h3>{p.name}</h3>
+            <p class="price" style="color: var(--gold-hi)">{gbp(p.price)}<sup>+VAT</sup></p>
+            <p class="small" style="color: var(--on-dark-2)">{p.forWhom}</p>
+            <p class="micro">per artwork</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page">
+      <h2>Add-ons</h2>
+      <div class="table-wrap" style="margin-top: var(--s6)">
+        <table class="table">
+          <thead><tr><th>Service</th><th>Price</th><th>Unit</th></tr></thead>
+          <tbody>
+            {ADD_ONS.map((a) => (
+              <tr>
+                <td><strong>{a.name}</strong></td>
+                <td class="num">{gbp(a.price)}</td>
+                <td style="color: var(--ink-3)">{a.unit}</td>
+              </tr>
+            ))}
+            <tr>
+              <td><strong>{BRAND_IDENTITY.name}</strong></td>
+              <td class="num">{BRAND_IDENTITY.priceLabel}</td>
+              <td style="color: var(--ink-3)">per project</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <p class="small" style="margin-top: var(--s5); color: var(--ink-3)">
+        VAT applies to UK-based clients.
+      </p>
+    </div>
+  </section>
+
+  <!-- A price table is abstract; a worked example converts. -->
+  <section class="section section--ground">
+    <div class="page">
+      <span class="eyebrow">Worked examples</span>
+      <h2>What a real project adds up to</h2>
+      <div class="table-wrap" style="margin-top: var(--s6); max-width: 860px">
+        <table class="table">
+          <thead><tr><th>Scenario</th><th>How it builds up</th><th>Total</th></tr></thead>
+          <tbody>
+            {WORKED_EXAMPLES.map((w) => (
+              <tr>
+                <td><strong>{w.scenario}</strong></td>
+                <td style="color: var(--ink-2)">{w.buildUp}</td>
+                <td class="num" style="color: var(--gold-lo)">{gbp(w.total)}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p class="note" style="margin-top: var(--s6)">
+        Build your own on the <a href="/start">project configurator</a> — it prices the territories
+        and languages as you pick them.
+      </p>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

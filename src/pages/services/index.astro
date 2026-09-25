@@ -1,0 +1,91 @@
+---
+import Base from '../../layouts/Base.astro'
+import PageHero from '../../components/PageHero.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { TIERS, COMPLIANCE_PRODUCTS, BRAND_IDENTITY, gbp } from '../../data/pricing'
+
+const services = [
+  {
+    href: '/services/packaging-design',
+    name: 'Packaging design',
+    what: 'The core offer. One product, one fixed price, three tiers split by pack format.',
+    price: `From ${gbp(Math.min(...TIERS.map((t) => t.price)))}`,
+  },
+  {
+    href: '/services/compliance-check',
+    name: 'Compliance check',
+    what: 'You already have artwork and you want it reviewed against the rules of your market.',
+    price: `From ${gbp(Math.min(...COMPLIANCE_PRODUCTS.map((c) => c.price)))}`,
+  },
+  {
+    href: '/services/brand-identity',
+    name: 'Brand identity',
+    what: 'Logo suite, colour, typography, guidelines and a handover pack, when there is no brand yet.',
+    price: BRAND_IDENTITY.priceLabel,
+  },
+  {
+    href: '/services/add-ons',
+    name: 'Add-ons and extras',
+    what: 'Languages, extra revision rounds and territory variations, added to any project.',
+    price: 'From £200',
+  },
+]
+---
+
+<Base
+  title="Services — packaging design, compliance checks and brand identity"
+  description="Four services: fixed-price packaging design from £1,000, standalone compliance checks from £750, brand identity quoted per project, and add-ons from £200."
+>
+  <PageHero
+    eyebrow="Services"
+    title="Four things we sell, all of them priced."
+    lead="Most clients need the first one. The second exists because a lot of people arrive having already paid someone else."
+  />
+
+  <section class="section section--ground">
+    <div class="page">
+      <div class="grid grid-2">
+        {services.map((s) => (
+          <a href={s.href} class="svc">
+            <div>
+              <h3>{s.name}</h3>
+              <p class="small" style="margin-top: var(--s3); color: var(--ink-2)">{s.what}</p>
+            </div>
+            <div class="svc__foot">
+              <strong class="spec">{s.price}</strong>
+              <span class="small">Read more &rarr;</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .svc {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s6);
+    justify-content: space-between;
+    padding: var(--s6);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-lg);
+    text-decoration: none;
+    transition: border-color .16s var(--ease), transform .16s var(--ease);
+  }
+  .svc:hover { border-color: var(--gold); transform: translateY(-2px); }
+  .svc__foot {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--s4);
+    padding-top: var(--s4);
+    border-top: 1px solid var(--rule);
+  }
+  .svc__foot strong { font-size: var(--t-lead); color: var(--gold-lo); }
+  .svc__foot span { color: var(--ink-3); }
+</style>

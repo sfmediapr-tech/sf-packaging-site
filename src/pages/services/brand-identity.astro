@@ -1,0 +1,62 @@
+---
+import Base from '../../layouts/Base.astro'
+import PageHero from '../../components/PageHero.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { BRAND_IDENTITY } from '../../data/pricing'
+---
+
+<Base
+  title="Brand identity for supplement brands — logo, colour, typography, guidelines"
+  description="Moodboard, logo suite, colour and typography, branding sheet and handover pack. Quoted per project, priced before any work starts."
+>
+  <PageHero
+    eyebrow="Brand identity"
+    title="Sometimes the pack is not the first problem."
+    lead="If there is no logo, no palette and no type system yet, packaging design starts by inventing all three — and that is a different piece of work with a different shape."
+  >
+    <div class="btn-row">
+      <a href="/contact" class="btn btn--primary">Enquire</a>
+      <a href="/services/packaging-design" class="btn btn--ghost">I already have a brand</a>
+    </div>
+  </PageHero>
+
+  <section class="section section--ground">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">What you get</span>
+        <h2>{BRAND_IDENTITY.name}</h2>
+        <p class="price" style="margin-top: var(--s5)">{BRAND_IDENTITY.priceLabel}</p>
+      </div>
+      <div class="stack-6">
+        <ul class="inclusions">
+          {BRAND_IDENTITY.includes.map((i) => <li>{i}</li>)}
+        </ul>
+        <!-- Brand identity is not on the packaging rate card, and the honest thing
+             is to say so rather than publish a number that is still being settled. -->
+        <p class="note">{BRAND_IDENTITY.note}</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Then the pack</span>
+        <h2>Identity first, artwork second</h2>
+      </div>
+      <div class="stack">
+        <p>
+          A brand identity is not a pack. It is the system a pack is built from — and building it
+          first is what stops the second SKU looking like a different company made it.
+        </p>
+        <p>
+          Most clients who start here go straight into a packaging tier afterwards, using the
+          identity as the brief. The handover pack is built to be handed to us, or to anyone else.
+        </p>
+        <a href="/services/packaging-design" class="btn btn--ghost">See the packaging tiers</a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

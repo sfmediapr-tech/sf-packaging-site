@@ -1,0 +1,148 @@
+---
+import Base from '../layouts/Base.astro'
+import PageHero from '../components/PageHero.astro'
+import CtaBand from '../components/CtaBand.astro'
+import { STAGES, CAVEAT, TIMINGS, TIMELINE_CAVEAT, WE_NEED } from '../data/process'
+import { SITE } from '../data/site'
+---
+
+<Base
+  title="How it works — five stages, four to six weeks"
+  description="Discovery call, questionnaire, design, proposal with three revision rounds, then a compliance check and sign-off. What happens at each stage and what we need from you."
+>
+  <PageHero
+    eyebrow="How it works"
+    title="Five stages, four to six weeks."
+    lead={CAVEAT}
+  />
+
+  <section class="section">
+    <div class="page">
+      <ol class="flow">
+        {STAGES.map((s) => (
+          <li class="flow__step">
+            <div class="flow__n spec">{s.n}</div>
+            <div class="flow__body">
+              <h2 class="flow__name">{s.name}</h2>
+              <p>{s.what}</p>
+              <p class="flow__needs small"><span class="micro">What we need</span> {s.needs}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section section--dark">
+    <div class="page">
+      <span class="eyebrow">Timings</span>
+      <h2>What to plan around</h2>
+      <div class="grid grid-4" style="margin-top: var(--s7)">
+        {TIMINGS.map((t) => (
+          <div class="timing">
+            <strong>{t.figure}</strong>
+            <p class="small">{t.detail}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- The honest addition the proposal does not make. It converts better than
+           a promise the process cannot keep, and it gives the account manager
+           something to point at when a project stalls on the client's side. -->
+      <p class="honest">{TIMELINE_CAVEAT}</p>
+      <p class="lead" style="max-width: 52ch">
+        On live projects the design work itself has rarely been the delay. A missing cutter guide,
+        unconfirmed nutrition figures and an unanswered question about which market the pack sells
+        into have each cost weeks.
+      </p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Before we start</span>
+        <h2>What we need from you</h2>
+        <p class="lead" style="margin-top: var(--s5)">
+          Five things. Each one has stalled a real project, and the four-to-six weeks runs from the
+          point we have them.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead><tr><th>What</th><th>Where from</th><th>Why</th></tr></thead>
+          <tbody>
+            {WE_NEED.map((w) => (
+              <tr>
+                <td><strong>{w.item}</strong></td>
+                <td style="color: var(--ink-3)">{w.from}</td>
+                <td style="color: var(--ink-2)">{w.why}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ground">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Where manufacturing joins</span>
+        <h2>Design is step six of ten</h2>
+      </div>
+      <div class="stack">
+        <p>
+          If you are manufacturing with us as well, design sits inside the private label process —
+          after the quote and the payment, and before production and QA. Nothing is handed between
+          companies, and the nutrition figures the panel is built from are the ones we hold.
+        </p>
+        <p>That is what "all in one place" means in practice, rather than as a claim.</p>
+        <a href={SITE.manufacturingUrl} class="btn btn--ghost">The private label process</a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+  .flow__step {
+    display: grid;
+    grid-template-columns: 64px 1fr;
+    gap: var(--s5);
+    padding: var(--s6) 0;
+    border-top: 1px solid var(--rule);
+  }
+  .flow__step:last-child { border-bottom: 1px solid var(--rule); }
+  .flow__n {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--gold);
+    line-height: 1;
+    letter-spacing: -.04em;
+  }
+  .flow__name { font-size: var(--t-h3); margin-bottom: var(--s3); }
+  .flow__body p { color: var(--ink-2); }
+  .flow__needs {
+    margin-top: var(--s4);
+    padding-top: var(--s3);
+    border-top: 1px dashed var(--rule);
+    color: var(--ink-3);
+  }
+  .flow__needs .micro { color: var(--gold-lo); margin-right: var(--s2); }
+
+  .timing { display: grid; gap: var(--s2); padding-top: var(--s4); border-top: 2px solid var(--gold); }
+  .timing strong { font-size: var(--t-h3); color: var(--gold-hi); letter-spacing: -.02em; }
+  .timing p { color: var(--on-dark-2); margin: 0; }
+
+  .honest {
+    margin: var(--s8) 0 var(--s5);
+    font-size: var(--t-h3);
+    color: var(--on-dark);
+    max-width: 24em;
+    padding-left: var(--s5);
+    border-left: 3px solid var(--gold);
+  }
+</style>

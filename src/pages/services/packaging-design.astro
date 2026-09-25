@@ -1,0 +1,160 @@
+---
+import Base from '../../layouts/Base.astro'
+import PageHero from '../../components/PageHero.astro'
+import TierCards from '../../components/TierCards.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { ADD_ONS, gbp } from '../../data/pricing'
+import { NOT_INCLUDED, WE_NEED } from '../../data/process'
+import { VERBATIM } from '../../data/copy'
+import { FORMATS } from '../../data/formats'
+---
+
+<Base
+  title="Packaging design service — three fixed-price tiers from £1,000"
+  description="Fixed-price packaging design for supplement brands. £1,000 for a bottle, jar or tub, £1,250 for a pouch, £1,500 for dual type. Each includes three revision rounds, a compliance check and full artwork ownership."
+>
+  <PageHero
+    eyebrow="Packaging design"
+    title="One product, one fixed price, one compliance check before it prints."
+    lead="Three tiers split by pack format. The inclusion list is identical across all three — the only thing that changes is the format and the price."
+  >
+    <div class="btn-row">
+      <a href="/start" class="btn btn--primary">Start your project</a>
+      <a href="/pricing" class="btn btn--ghost">Full rate card</a>
+    </div>
+  </PageHero>
+
+  <section class="section section--ground">
+    <div class="page">
+      <TierCards withRationale />
+      <p class="small" style="margin-top: var(--s5); color: var(--ink-3)">VAT applies to UK-based clients.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">What is included</span>
+        <h2>Stated plainly</h2>
+      </div>
+      <div class="stack-6">
+        <ul class="inclusions inclusions--lg">
+          <li>One packaging design for one product.</li>
+          <li>A design proposal, then up to three rounds of revisions.</li>
+          <li>An internal compliance check against the rules of your area of sale, before anything goes to print.</li>
+          <li>The final artwork files, with full ownership transferring to you.</li>
+        </ul>
+        <p class="note">{VERBATIM.access}.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- The proposal does not spell these out and the website must, because every
+       one of them has caused a stall on a live project. -->
+  <section class="section section--rule">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">What is not included</span>
+        <h2>The things that are not ours to give you</h2>
+        <p class="lead" style="margin-top: var(--s5)">
+          None of these are hidden costs — they are things that come from elsewhere, and knowing
+          which ones you are missing is what keeps a project on four to six weeks.
+        </p>
+      </div>
+      <div class="stack-6">
+        <ul class="excl">
+          {NOT_INCLUDED.map((n) => <li>{n}</li>)}
+        </ul>
+
+        <div>
+          <h3 style="margin-bottom: var(--s4)">What we need from you</h3>
+          <div class="table-wrap">
+            <table class="table">
+              <thead>
+                <tr><th>What</th><th>From</th><th>Why it matters</th></tr>
+              </thead>
+              <tbody>
+                {WE_NEED.map((w) => (
+                  <tr>
+                    <td><strong>{w.item}</strong></td>
+                    <td>{w.from}</td>
+                    <td style="color: var(--ink-2)">{w.why}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ground">
+    <div class="page">
+      <span class="eyebrow">Add-ons</span>
+      <h2>Everything else, priced</h2>
+      <div class="table-wrap" style="margin-top: var(--s6); max-width: 820px">
+        <table class="table">
+          <tbody>
+            {ADD_ONS.map((a) => (
+              <tr>
+                <td><strong>{a.name}</strong><br /><span class="small" style="color: var(--ink-3)">{a.covers}</span></td>
+                <td class="num">{gbp(a.price)}<br /><span class="micro" style="font-weight: 400">{a.unit}</span></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top: var(--s5)"><a href="/services/add-ons">Why a right-to-left language costs double &rarr;</a></p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="page">
+      <span class="eyebrow">Formats</span>
+      <h2>Which tier is my pack?</h2>
+      <div class="grid grid-3" style="margin-top: var(--s6)">
+        {FORMATS.map((f) => (
+          <a href={`/formats/${f.slug}`} class="ftile">
+            <strong>{f.shortName}</strong>
+            <span class="small">{f.tier === 'quote' ? 'Quoted per project' : f.tier.replace('tier-', 'Tier ')}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .inclusions--lg li { font-size: var(--t-lead); color: var(--ink); line-height: 1.45; }
+  .inclusions--lg li::before { margin-top: .5em; }
+
+  .excl { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s3); }
+  .excl li {
+    display: grid;
+    grid-template-columns: 18px 1fr;
+    gap: var(--s3);
+    font-size: var(--t-small);
+    color: var(--ink-2);
+  }
+  .excl li::before {
+    content: '';
+    width: 10px; height: 2px;
+    margin-top: .72em;
+    background: var(--rule-2);
+  }
+
+  .ftile {
+    display: grid;
+    gap: var(--s1);
+    padding: var(--s5);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-lg);
+    text-decoration: none;
+    transition: border-color .16s var(--ease);
+  }
+  .ftile:hover { border-color: var(--gold); }
+  .ftile span { color: var(--ink-3); }
+</style>

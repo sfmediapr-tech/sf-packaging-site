@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro'
+import PageHero from '../../components/PageHero.astro'
+import FormatCard from '../../components/FormatCard.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import PackStage from '../../islands/PackStage'
+import { FORMATS } from '../../data/formats'
+
+const dieLineCount = FORMATS.reduce((n, f) => n + f.dieLines.length, 0)
+---
+
+<Base
+  title="Pack formats we design for — pouches, tubs, sticks, bottles, cartons"
+  description="Five pack families, one page each: pouches, tubs and jars, sticks and sachets, bottles, cartons and blisters. Sizes we work to, materials, finishes and the die lines we already hold."
+>
+  <PageHero
+    eyebrow="Formats"
+    title="Start from the pack you actually have."
+    lead="Most supplement sites organise by dose format — capsules, powders, gummies — because that is how a factory thinks. You think in packs. So this is organised by pack."
+  />
+
+  <section class="section--tight">
+    <div class="page">
+      <div class="fhub">
+        <div>
+          <PackStage client:visible />
+        </div>
+        <div class="stack">
+          <h2>Turn it, and pick the one that looks like yours.</h2>
+          <p>
+            Each family has its own page: the sizes we work to, the materials and finishes
+            available, what the design has to carry on that format, and which tier it falls into.
+          </p>
+          <p class="note">
+            <strong>{dieLineCount} die lines held.</strong> If your pack matches one of them, layout
+            can start immediately rather than waiting on your supplier — which is usually the
+            longest pole in the tent.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--ground">
+    <div class="page">
+      <div class="grid grid-3">
+        {FORMATS.map((f) => <FormatCard format={f} />)}
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    title="Not sure which one you have?"
+    lead="Tell us the pack and the market and we will tell you the format, the tier and what it will cost."
+  />
+</Base>
+
+<style>
+  .fhub {
+    display: grid;
+    gap: var(--s8);
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr);
+  }
+  @media (min-width: 900px) {
+    .fhub { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  }
+</style>

@@ -1,0 +1,115 @@
+---
+import Base from '../layouts/Base.astro'
+import PageHero from '../components/PageHero.astro'
+import { CONTACT, ENTRY_POINTS } from '../data/site'
+---
+
+<Base
+  title="Contact — book a discovery call"
+  description="Book a discovery call, email the design team, or start your project in the configurator. A named person replies, within one working day."
+>
+  <PageHero
+    eyebrow="Contact"
+    title="Talk to the people who will do the work."
+    lead="A discovery call is stage one of the process and costs nothing. An hour, a video call, and your product idea."
+  />
+
+  <section class="section--tight">
+    <div class="page split">
+      <div class="stack-6">
+        <div>
+          <h2 class="micro" style="margin-bottom: var(--s3)">Email</h2>
+          <p><a href={`mailto:${CONTACT.fallbackEmail}`} class="big-link">{CONTACT.fallbackEmail}</a></p>
+          <p class="small" style="color: var(--ink-3)">
+            {CONTACT.namedPerson
+              ? `${CONTACT.namedPerson} replies, usually within ${CONTACT.responseTime.toLowerCase()}.`
+              : `A named member of the design team replies, usually within ${CONTACT.responseTime.toLowerCase()}.`}
+          </p>
+        </div>
+
+        <div>
+          <h2 class="micro" style="margin-bottom: var(--s3)">Or go straight in</h2>
+          <ul class="entries">
+            {ENTRY_POINTS.map((e) => (
+              <li>
+                <a href={e.href}><strong>{e.label}</strong></a>
+                <span class="small">{e.forWhom}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      <div>
+        <form class="form" method="post" action="/api/enquiry">
+          <h2>Book a discovery call</h2>
+
+          <label>Your name<input type="text" name="name" required autocomplete="name" /></label>
+          <label>Email<input type="email" name="email" required autocomplete="email" /></label>
+          <label>Brand or company<input type="text" name="company" autocomplete="organization" /></label>
+
+          <label>What are you making?
+            <textarea name="product" rows="3" placeholder="The product, the pack you have in mind, and roughly when you want to launch"></textarea>
+          </label>
+
+          <label>Where will you sell it?
+            <select name="market">
+              <option value="">Choose…</option>
+              <option>UK only</option>
+              <option>UK and EU</option>
+              <option>UK and USA</option>
+              <option>Canada</option>
+              <option>More than one — not sure yet</option>
+            </select>
+          </label>
+
+          <button type="submit" class="btn btn--primary">Request a call</button>
+
+          <p class="micro form__note">
+            We will come back with a time, and a short list of anything we need from you before the
+            call is useful.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .big-link { font-size: var(--t-h3); font-weight: 700; color: var(--gold-lo); text-decoration: none; }
+  .big-link:hover { text-decoration: underline; }
+
+  .entries { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s4); }
+  .entries li { display: grid; gap: 2px; padding-top: var(--s4); border-top: 1px solid var(--rule); }
+  .entries a { text-decoration: none; }
+  .entries a:hover strong { color: var(--gold-lo); }
+  .entries span { color: var(--ink-3); }
+
+  .form {
+    display: grid;
+    gap: var(--s4);
+    padding: var(--s6);
+    background: var(--ground);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-lg);
+  }
+  .form label {
+    display: grid;
+    gap: var(--s2);
+    font-size: var(--t-small);
+    font-weight: 600;
+  }
+  .form input, .form select, .form textarea {
+    font: inherit;
+    font-size: var(--t-body);
+    font-weight: 400;
+    padding: var(--s3);
+    border: 1px solid var(--rule-2);
+    border-radius: var(--r);
+    background: var(--paper);
+    color: var(--ink);
+  }
+  .form textarea { resize: vertical; }
+  .form button { justify-self: start; margin-top: var(--s2); }
+  .form__note { color: var(--ink-3); margin: 0; }
+</style>

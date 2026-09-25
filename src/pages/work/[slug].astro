@@ -1,0 +1,127 @@
+---
+import Base from '../../layouts/Base.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { CASE_STUDIES, TESTIMONIALS_CLEARED } from '../../data/work'
+import { FORMATS } from '../../data/formats'
+import { TIERS, gbp } from '../../data/pricing'
+
+export function getStaticPaths() {
+  return CASE_STUDIES.map((study) => ({ params: { slug: study.slug }, props: { study } }))
+}
+
+const { study } = Astro.props
+const format = FORMATS.find((f) => f.slug === study.formatSlug)
+const tier = TIERS.find((t) => t.id === study.tier)
+---
+
+<Base
+  title={`${study.client} — ${study.product}, ${study.format.toLowerCase()}`}
+  description={`${study.brief.slice(0, 155)}`}
+>
+  <article>
+    <section class="section--tight cs-hero">
+      <div class="page">
+        <p class="micro"><a href="/work">Our work</a> · {study.format}</p>
+        <h1>{study.client}</h1>
+        <p class="lead cs-hero__lead">{study.product}</p>
+
+        <div class="cs-hero__shot" aria-hidden="true">
+          <span class="spec micro">Pack photography pending rights confirmation</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section--tight">
+      <div class="page split">
+        <div>
+          <span class="eyebrow">The brief</span>
+          <h2>What they came with</h2>
+        </div>
+        <div class="stack-6">
+          <p class="lead">{study.brief}</p>
+
+          <div class="cs-meta">
+            <div><span class="micro">Format</span><strong>{study.format}</strong></div>
+            <div>
+              <span class="micro">Tier</span>
+              <strong>{tier ? `${tier.name} · ${gbp(tier.price)}` : 'Quoted per project'}</strong>
+            </div>
+            {format && (
+              <div><span class="micro">Format page</span><strong><a href={`/formats/${format.slug}`}>{format.shortName}</a></strong></div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--ground">
+      <div class="page split">
+        <div>
+          <span class="eyebrow">What was designed</span>
+          <h2>The work</h2>
+        </div>
+        <ul class="inclusions inclusions--lg">
+          {study.designed.map((d) => <li>{d}</li>)}
+        </ul>
+      </div>
+    </section>
+
+    {study.complianceCaught && (
+      <section class="section section--dark">
+        <div class="page page--narrow">
+          <span class="eyebrow">Caught before print</span>
+          <p class="quote">{study.complianceCaught}</p>
+        </div>
+      </section>
+    )}
+
+    {TESTIMONIALS_CLEARED && study.quote && (
+      <section class="section">
+        <div class="page page--narrow">
+          <figure>
+            <blockquote class="quote cs-quote">{study.quote}</blockquote>
+            <figcaption class="small" style="margin-top: var(--s5)">
+              <strong>{study.contact}</strong>, {study.client}
+            </figcaption>
+          </figure>
+        </div>
+      </section>
+    )}
+  </article>
+
+  <CtaBand
+    title={`Have a ${study.format.toLowerCase()} of your own?`}
+    lead="Same process, same fixed price, same compliance check before anything prints."
+  />
+</Base>
+
+<style>
+  .cs-hero { padding-top: var(--s8); }
+  .cs-hero h1 { margin-top: var(--s3); }
+  .cs-hero__lead { margin-top: var(--s3); color: var(--ink-3); }
+  .cs-hero__shot {
+    margin-top: var(--s7);
+    aspect-ratio: 16 / 9;
+    border-radius: var(--r-lg);
+    border: 1px solid var(--rule);
+    background: repeating-linear-gradient(45deg, var(--ground) 0 14px, var(--ground-2) 14px 28px);
+    display: grid;
+    place-items: center;
+  }
+  .cs-hero__shot span { color: var(--ink-3); letter-spacing: .1em; text-transform: uppercase; }
+
+  .cs-meta {
+    display: grid;
+    gap: var(--s5);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    padding-top: var(--s5);
+    border-top: 1px solid var(--rule);
+  }
+  .cs-meta > div { display: grid; gap: 2px; }
+  .cs-meta strong { font-size: var(--t-body); }
+
+  .inclusions--lg li { font-size: var(--t-lead); color: var(--ink); line-height: 1.45; }
+  .inclusions--lg li::before { margin-top: .5em; }
+
+  .cs-quote { font-size: var(--t-h2); line-height: 1.25; max-width: 18em; }
+</style>

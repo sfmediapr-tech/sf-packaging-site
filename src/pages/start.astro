@@ -1,0 +1,39 @@
+---
+import Base from '../layouts/Base.astro'
+import Estimator from '../islands/Estimator'
+
+/* The configurator is how the site converts. Phase one of it: the question order,
+   the rate-card estimate and the delay flags. Phase two is the die line library
+   and MOQ validation; phase three is the quote feed into The Hive, which is
+   already where quotes are generated, signed and converted to an invoice. The
+   site should end at that quote rather than duplicate it. */
+const preset = Astro.url.searchParams.get('format') ?? ''
+---
+
+<Base
+  title="Start your project — build a specification and get a price"
+  description="Ten questions, in the order that prevents the most delay. Get an itemised estimate from the published rate card before you speak to anyone."
+>
+  <section class="section--tight start-hero">
+    <div class="page">
+      <span class="eyebrow">Start your project</span>
+      <h1>Ten questions, and a price at the end of them.</h1>
+      <p class="lead start-hero__lead">
+        Answer what you can. The estimate builds itself from the published rate card as you go, and
+        anything that would slow the project down gets flagged here rather than three weeks in.
+      </p>
+    </div>
+  </section>
+
+  <section class="section--tight">
+    <div class="page">
+      <Estimator client:load presetFormat={preset} />
+    </div>
+  </section>
+</Base>
+
+<style>
+  .start-hero { padding-top: var(--s8); }
+  .start-hero h1 { margin-top: var(--s2); max-width: 14em; }
+  .start-hero__lead { margin-top: var(--s5); max-width: 52ch; }
+</style>

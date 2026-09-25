@@ -1,0 +1,39 @@
+---
+import { ENTRY_POINTS } from '../data/site'
+
+interface Props {
+  title?: string
+  lead?: string
+}
+const {
+  title = 'Three ways in, depending on where you are',
+  lead = 'Three different people arrive here with three different problems, so there is no single button that suits all of them.',
+} = Astro.props
+---
+<section class="section section--dark">
+  <div class="page">
+    <span class="eyebrow">Start</span>
+    <h2>{title}</h2>
+    <p class="lead" style="margin-top: var(--s5)">{lead}</p>
+
+    <div class="grid grid-3" style="margin-top: var(--s7)">
+      {ENTRY_POINTS.map((e, i) => (
+        <article class="card card--dark entry">
+          <span class="micro entry__n">0{i + 1}</span>
+          <h3>{e.label}</h3>
+          <p class="small">{e.forWhom}</p>
+          <p class="small entry__leads">{e.leadsTo}</p>
+          <a href={e.href} class="btn btn--primary entry__cta">{e.label}</a>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .entry { gap: var(--s3); }
+  .entry__n { color: var(--gold-hi); }
+  .entry p { color: var(--on-dark-2); }
+  .entry__leads { color: var(--on-dark-3); }
+  .entry__cta { margin-top: auto; align-self: flex-start; }
+</style>

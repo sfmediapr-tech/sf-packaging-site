@@ -1,0 +1,45 @@
+---
+import type { PackFormat } from '../data/formats'
+import { TIERS, gbp } from '../data/pricing'
+import { QUOTED_FORMAT_NOTE } from '../data/formats'
+
+interface Props { format: PackFormat }
+const { format } = Astro.props
+const tier = TIERS.find((t) => t.id === format.tier)
+---
+<a href={`/formats/${format.slug}`} class="fcard">
+  <div class="fcard__head">
+    <h3>{format.shortName}</h3>
+    <span class="tag tag--gold">
+      {tier ? `${tier.name} · ${gbp(tier.price)}` : 'Quoted per project'}
+    </span>
+  </div>
+  <p class="small fcard__covers">{format.covers.join(' · ')}</p>
+  {format.dieLines.length > 0 && (
+    <p class="micro spec fcard__dl">{format.dieLines.length} die lines held</p>
+  )}
+  <span class="fcard__go small">Choose this format &rarr;</span>
+</a>
+
+<style>
+  .fcard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    padding: var(--s6);
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--r-lg);
+    text-decoration: none;
+    transition: border-color .18s var(--ease), transform .18s var(--ease), box-shadow .18s var(--ease);
+  }
+  .fcard:hover {
+    border-color: var(--gold);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+  }
+  .fcard__head { display: flex; flex-wrap: wrap; gap: var(--s3); align-items: baseline; justify-content: space-between; }
+  .fcard__covers { color: var(--ink-2); margin: 0; }
+  .fcard__dl { color: var(--gold-lo); margin: 0; }
+  .fcard__go { margin-top: auto; padding-top: var(--s3); font-weight: 700; color: var(--gold-lo); }
+</style>

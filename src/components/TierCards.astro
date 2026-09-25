@@ -1,0 +1,45 @@
+---
+import { TIERS, TIER_INCLUSIONS, gbp } from '../data/pricing'
+
+interface Props {
+  /** Show the tier logic under each card. Wanted on the service page, not the homepage. */
+  withRationale?: boolean
+  dark?: boolean
+}
+const { withRationale = false, dark = false } = Astro.props
+---
+<div class="grid grid-3">
+  {TIERS.map((tier) => (
+    <article class:list={['card', dark && 'card--dark', 'tier']}>
+      <div>
+        <span class="micro">{tier.name}</span>
+        <h3 class="tier__covers">{tier.covers}</h3>
+      </div>
+
+      <p class="price price--gold">{gbp(tier.price)}<sup>+VAT</sup></p>
+
+      <ul class="inclusions">
+        {TIER_INCLUSIONS.map((inc) => <li>{inc}</li>)}
+      </ul>
+
+      {withRationale && <p class="small tier__why">{tier.rationale}</p>}
+
+      <a href={`/start?tier=${tier.id}`} class:list={['btn', dark ? 'btn--primary' : 'btn--ink', 'tier__cta']}>
+        Start on {tier.name}
+      </a>
+    </article>
+  ))}
+</div>
+
+<style>
+  .tier { justify-content: flex-start; }
+  .tier__covers { margin-top: var(--s2); max-width: 14em; }
+  .tier__why {
+    color: var(--ink-3);
+    border-top: 1px solid var(--rule);
+    padding-top: var(--s4);
+    margin: 0;
+  }
+  .card--dark .tier__why { color: var(--on-dark-3); border-top-color: var(--rule-dark); }
+  .tier__cta { margin-top: auto; align-self: flex-start; }
+</style>

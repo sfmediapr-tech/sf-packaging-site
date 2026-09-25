@@ -1,0 +1,91 @@
+---
+import Base from '../../layouts/Base.astro'
+import PageHero from '../../components/PageHero.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { ADD_ONS, gbp } from '../../data/pricing'
+import { MARKETS } from '../../data/compliance'
+---
+
+<Base
+  title="Add-ons and extras — languages, revisions and territory variations"
+  description="Additional languages from £200, right-to-left from £400, extra revision rounds £200, and artwork territory variations at £500 each. Priced, explained and added to any project."
+>
+  <PageHero
+    eyebrow="Add-ons and extras"
+    title="The things that get added to a project, priced before you ask."
+    lead="Extra languages, extra revision rounds and variations for additional territories. All four are per artwork, and all four are on the published rate card rather than quoted case by case."
+  />
+
+  <section class="section section--ground">
+    <div class="page">
+      <div class="grid grid-2">
+        {ADD_ONS.map((a) => (
+          <article class="card">
+            <div>
+              <h3>{a.name}</h3>
+              <p class="small" style="color: var(--ink-3); margin-top: var(--s2)">{a.covers}</p>
+            </div>
+            <p class="price price--gold">{gbp(a.price)}<sup>+VAT</sup></p>
+            <p class="micro">{a.unit}</p>
+            {a.note && <p class="note small">{a.note}</p>}
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- The territory variation is a real product with no page anywhere. This is it. -->
+  <section class="section" id="territories">
+    <div class="page split">
+      <div>
+        <span class="eyebrow">Territory guide</span>
+        <h2>A Canadian pack is not a US pack with the French removed.</h2>
+        <p class="lead" style="margin-top: var(--s5)">
+          It is a second artwork. The panel format changes, the mandatory statements change, the
+          claim rules change, and in Canada the wording has to match the licence exactly. That is
+          why a territory variation is £500 and not a find-and-replace.
+        </p>
+      </div>
+      <div class="table-wrap">
+        <table class="table">
+          <thead>
+            <tr><th>Market</th><th>Regime</th><th>What the pack must carry</th></tr>
+          </thead>
+          <tbody>
+            {MARKETS.map((m) => (
+              <tr>
+                <td><strong>{m.market}</strong></td>
+                <td style="color: var(--ink-3)">{m.regime}</td>
+                <td>
+                  <ul class="mlist">{m.carries.map((c) => <li>{c}</li>)}</ul>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section--rule">
+    <div class="page page--narrow">
+      <span class="eyebrow">Worth knowing</span>
+      <h2>Ask about territories first, not last</h2>
+      <p class="lead" style="margin-top: var(--s5)">
+        Where you sell decides the panel format, the mandatory statements, the claim rules and
+        whether the job is one artwork or two. It is the first question our configurator asks, and
+        the reason is not academic: on one live project, asking it late cost three months of rework.
+      </p>
+      <div class="btn-row" style="margin-top: var(--s6)">
+        <a href="/start" class="btn btn--primary">Configure your project</a>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>
+
+<style>
+  .mlist { margin: 0; padding-left: 1.1em; display: grid; gap: 2px; }
+  .mlist li { color: var(--ink-2); }
+</style>

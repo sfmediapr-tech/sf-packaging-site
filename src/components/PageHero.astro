@@ -1,0 +1,23 @@
+---
+interface Props {
+  eyebrow?: string
+  title: string
+  lead?: string
+  dark?: boolean
+}
+const { eyebrow, title, lead, dark = false } = Astro.props
+---
+<section class:list={['hero', dark && 'section--dark']}>
+  <div class="page">
+    {eyebrow && <span class="eyebrow">{eyebrow}</span>}
+    <h1>{title}</h1>
+    {lead && <p class="lead hero__lead">{lead}</p>}
+    <slot />
+  </div>
+</section>
+
+<style>
+  .hero { padding-block: var(--s9) var(--s8); }
+  .hero__lead { margin-top: var(--s5); max-width: 40ch; }
+  .hero :global(.btn-row) { margin-top: var(--s6); }
+</style>

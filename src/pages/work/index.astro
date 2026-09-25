@@ -1,0 +1,68 @@
+---
+import Base from '../../layouts/Base.astro'
+import PageHero from '../../components/PageHero.astro'
+import CaseStudyCard from '../../components/CaseStudyCard.astro'
+import CtaBand from '../../components/CtaBand.astro'
+import { CASE_STUDIES, TESTIMONIALS_CLEARED } from '../../data/work'
+import { FORMATS } from '../../data/formats'
+---
+
+<Base
+  title="Our work — eight supplement packs, start to finish"
+  description="Eight named brands, eight packs: pouches, tubs, cartons, bottles and liquid dosing sticks. What the brief was, what was designed, and what was caught before print."
+>
+  <PageHero
+    eyebrow="Our work"
+    title="Eight brands, eight packs."
+    lead="Filter by format. Each one shows the brief, what was designed, and where it applies, what the compliance check caught before anything went to print."
+  />
+
+  <section class="section--tight">
+    <div class="page">
+      <div class="filters" role="group" aria-label="Filter by format">
+        <button class="stage__tab is-on" data-filter="all">All</button>
+        {FORMATS.map((f) => (
+          <button class="stage__tab" data-filter={f.slug}>{f.shortName}</button>
+        ))}
+      </div>
+
+      <div class="grid grid-3" style="margin-top: var(--s6)" id="work-grid">
+        {CASE_STUDIES.map((s) => <CaseStudyCard study={s} />)}
+      </div>
+    </div>
+  </section>
+
+  {!TESTIMONIALS_CLEARED && (
+    <section class="section--tight">
+      <div class="page">
+        <p class="note">
+          Client quotes are held back until each brand has confirmed we can publish theirs. The
+          packs, the briefs and what was caught before print are all ours to show, and they are here.
+        </p>
+      </div>
+    </section>
+  )}
+
+  <CtaBand />
+</Base>
+
+<script>
+  // Filtering is a nine-line progressive enhancement rather than an island: the
+  // page is fully readable, and every card is a real link, before this runs.
+  const buttons = document.querySelectorAll<HTMLButtonElement>('[data-filter]')
+  const cards = document.querySelectorAll<HTMLElement>('#work-grid [data-format]')
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const want = btn.dataset.filter
+      buttons.forEach((b) => b.classList.toggle('is-on', b === btn))
+      cards.forEach((c) => {
+        c.style.display = want === 'all' || c.dataset.format === want ? '' : 'none'
+      })
+    })
+  })
+</script>
+
+<style>
+  .filters { display: flex; flex-wrap: wrap; gap: var(--s2); }
+</style>
