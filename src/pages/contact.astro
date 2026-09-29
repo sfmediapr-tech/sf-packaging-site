@@ -2,6 +2,20 @@
 import Base from '../layouts/Base.astro'
 import PageHero from '../components/PageHero.astro'
 import { CONTACT, ENTRY_POINTS } from '../data/site'
+
+const ERRORS: Record<string, string> = {
+  missing: 'We need at least your name and email to reply.',
+  email: 'That email address does not look right — check it and send again.',
+  storage: 'Something went wrong our end and the enquiry was not saved. Please email us directly.',
+  unreadable: 'We could not read that submission. Please try again.',
+}
+const error = ERRORS[Astro.url.searchParams.get('error') ?? '']
+
+/* Server-rendered, unlike the rest of the site: a prerendered page is built once
+   with no query string, so the error the endpoint redirects back with would
+   never appear. This page needs a server anyway, since the form it carries posts
+   to one. */
+export const prerender = false
 ---
 
 <Base
@@ -44,6 +58,8 @@ import { CONTACT, ENTRY_POINTS } from '../data/site'
         <form class="form" method="post" action="/api/enquiry">
           <h2>Book a discovery call</h2>
 
+          {error && <p class="note note--pencil small" role="alert">{error}</p>}
+
           <label>Your name<input type="text" name="name" required autocomplete="name" /></label>
           <label>Email<input type="email" name="email" required autocomplete="email" /></label>
           <label>Brand or company<input type="text" name="company" autocomplete="organization" /></label>
@@ -62,6 +78,11 @@ import { CONTACT, ENTRY_POINTS } from '../data/site'
               <option>More than one — not sure yet</option>
             </select>
           </label>
+
+          <!-- Honeypot. Hidden from people, irresistible to bots. -->
+          <div class="form__hp" aria-hidden="true">
+            <label>Website<input type="text" name="website" tabindex="-1" autocomplete="off" /></label>
+          </div>
 
           <button type="submit" class="btn btn--primary">Request a call</button>
 
@@ -112,4 +133,5 @@ import { CONTACT, ENTRY_POINTS } from '../data/site'
   .form textarea { resize: vertical; }
   .form button { justify-self: start; margin-top: var(--s2); }
   .form__note { color: var(--ink-3); margin: 0; }
+  .form__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 </style>

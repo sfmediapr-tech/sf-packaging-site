@@ -90,6 +90,19 @@ designed and any compliance issue caught are all real and all ours to show. Flip
 constant when Lee confirms, and the client words appear on the case studies, the format pages and
 the homepage at once.
 
+## Enquiries
+
+The contact form posts to `/api/enquiry`. Every enquiry is written to `.data/enquiries.jsonl`
+first and forwarded second, so a mail failure never loses a lead; if it cannot be stored at all,
+the visitor is told rather than thanked. Forwarding needs `RESEND_API_KEY` and
+`ENQUIRY_FORWARD_TO` — **until those are set, that file is the inbox.** A hidden honeypot field
+catches bots.
+
+This is why the site now carries `@astrojs/node`. Pages are still static — the build emits 28
+HTML pages, so the format pages and case studies keep their search traffic — and only
+`/api/enquiry` and `/contact` run on a server. `/contact` has to, because a prerendered page is
+built once with no query string and could never show the error the endpoint redirects back with.
+
 ## Ten decisions still blocking launch
 
 From the brief's backlog. Each one has an owner, and several of them are one constant in a data
@@ -115,8 +128,9 @@ file away from being applied.
 - **Before-and-after compliance examples**, anonymised. The brief is right that this is the most
   compelling thing we could publish and it sells the £750 check better than any description of
   it. `BEFORE_AFTER_PENDING` in `work.ts`.
-- **A form endpoint.** `/contact` posts to `/api/enquiry`, which does not exist yet. The
-  configurator's "send this specification" currently routes to the contact page.
+- **Somebody to read the enquiries.** They are stored and, once `RESEND_API_KEY` is set,
+  forwarded. The configurator's "send this specification" still routes to the contact page rather
+  than carrying the spec with it.
 
 ## Phase three and four
 

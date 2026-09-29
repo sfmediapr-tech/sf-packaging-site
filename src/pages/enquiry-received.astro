@@ -1,0 +1,27 @@
+---
+import Base from '../layouts/Base.astro'
+import { CONTACT } from '../data/site'
+---
+<Base title="Enquiry received — Supplement Factory" description="Thank you. We have your enquiry.">
+  <section class="section">
+    <div class="page page--narrow">
+      <span class="eyebrow">Received</span>
+      <h1>Thank you — we have it.</h1>
+      <p class="lead" style="margin-top: var(--s5)">
+        {CONTACT.namedPerson ?? 'A named member of the design team'} will come back to you within
+        {' '}{CONTACT.responseTime.toLowerCase()}, with a time for the call and a short list of
+        anything we need from you before it is useful.
+      </p>
+
+      <div class="note" style="margin-top: var(--s7)">
+        The four-to-six weeks runs from when we have what we need, not from the invoice — so that
+        list is worth reading before the call.
+      </div>
+
+      <div class="btn-row" style="margin-top: var(--s7)">
+        <a href="/" class="btn btn--ink">Back to the site</a>
+        <a href="/how-it-works" class="btn btn--ghost">What we need from you</a>
+      </div>
+    </div>
+  </section>
+</Base>
