@@ -35,6 +35,23 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
     </nav>
 
     <a href="/start" class="btn btn--primary hdr__cta">Start your project</a>
+
+    <details class="hdr__mob">
+      <summary aria-label="Menu"><span></span><span></span><span></span></summary>
+      <div class="hdr__mobpanel">
+        {NAV.map((item) => (
+          <div class="hdr__mobgroup">
+            <a href={item.href} class="hdr__moblead">{item.label}</a>
+            {item.children && (
+              <ul>{item.children.map((c) => <li><a href={c.href}>{c.label}</a></li>)}</ul>
+            )}
+          </div>
+        ))}
+        <div class="hdr__mobgroup">
+          <a href="/contact" class="hdr__moblead">Contact</a>
+        </div>
+      </div>
+    </details>
   </div>
 </header>
 
@@ -142,8 +159,36 @@ const isCurrent = (href: string) => path === href || (href !== '/' && path.start
 
   .hdr__cta { flex-shrink: 0; }
 
+  .hdr__mob { display: none; position: relative; }
+  .hdr__mob summary {
+    list-style: none; cursor: pointer;
+    display: grid; gap: 4px; align-content: center;
+    width: 34px; height: 34px; padding: 8px 6px;
+    border: 1px solid var(--rule-2); border-radius: var(--r-control);
+  }
+  .hdr__mob summary::-webkit-details-marker { display: none; }
+  .hdr__mob summary::marker { content: ''; }
+  .hdr__mob summary span { display: block; height: 2px; background: var(--ink); border-radius: 2px; }
+  .hdr--dark .hdr__mob summary { border-color: var(--rule-dark); }
+  .hdr--dark .hdr__mob summary span { background: var(--on-dark); }
+  .hdr__mob[open] summary { border-color: var(--gold); }
+
+  .hdr__mobpanel {
+    position: absolute; top: calc(100% + 10px); right: 0;
+    width: min(84vw, 300px); max-height: 74vh; overflow-y: auto;
+    display: grid; gap: var(--s5); padding: var(--s5);
+    background: var(--paper); color: var(--ink);
+    border: 1px solid var(--rule); border-radius: var(--r-lg); box-shadow: var(--shadow-lift);
+  }
+  .hdr__mobgroup { display: grid; gap: var(--s2); }
+  .hdr__moblead { font-size: var(--t-small); font-weight: 700; text-decoration: none; }
+  .hdr__mobpanel ul { list-style: none; margin: 0; padding: 0 0 0 var(--s4); display: grid; gap: var(--s2); }
+  .hdr__mobpanel ul a { font-size: var(--t-small); color: var(--ink-2); text-decoration: none; }
+  .hdr__mobpanel a:hover { color: var(--gold-lo); }
+
   @media (max-width: 1000px) {
     .hdr__nav { display: none; }
+    .hdr__mob { display: block; }
     .hdr__inner { justify-content: space-between; }
     .hdr__cta { margin-left: auto; }
   }
